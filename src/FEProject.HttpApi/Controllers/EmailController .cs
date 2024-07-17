@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace FEProject.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/email")]
     public class EmailController : ControllerBase
     {
         private readonly IEmailService _emailService;

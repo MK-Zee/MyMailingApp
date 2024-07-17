@@ -1,9 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FEProject.Communities;
+using Microsoft.EntityFrameworkCore;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.BackgroundJobs.EntityFrameworkCore;
 using Volo.Abp.Data;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.EntityFrameworkCore;
+using Volo.Abp.EntityFrameworkCore.Modeling;
 using Volo.Abp.FeatureManagement.EntityFrameworkCore;
 using Volo.Abp.Identity;
 using Volo.Abp.Identity.EntityFrameworkCore;
@@ -24,6 +26,7 @@ public class FEProjectDbContext :
     ITenantManagementDbContext
 {
     /* Add DbSet properties for your Aggregate Roots / Entities here. */
+    public DbSet<Community> Communities { get; set; }
 
     #region Entities from the modules
 
@@ -75,6 +78,18 @@ public class FEProjectDbContext :
         builder.ConfigureTenantManagement();
 
         /* Configure your own tables/entities inside here */
+        builder.Entity<Community>(b =>
+        {
+            b.ToTable("Communities"); // Ensure the correct table name if different
+            b.ConfigureByConvention();
+            b.HasOne<IdentityUser>()
+                .WithMany()
+                .HasForeignKey(c => c.CreatedBy)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Restrict); // or Cascade if needed
+
+            // Other configurations for the Community entity
+        });
 
         //builder.Entity<YourEntity>(b =>
         //{

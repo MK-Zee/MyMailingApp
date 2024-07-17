@@ -1,5 +1,7 @@
-﻿using FEProject.Emails;
+﻿using FEProject.Communities;
+using FEProject.Emails;
 using FEProject.Services;
+using FEProject.Users;
 using Microsoft.Extensions.DependencyInjection;
 using Volo.Abp.Account;
 using Volo.Abp.AutoMapper;
@@ -31,6 +33,9 @@ public class FEProjectApplicationModule : AbpModule
 
         // Register email service
         context.Services.AddTransient<IEmailService, EmailService>();
+
+        context.Services.AddTransient<IUserAppService, UserAppService>();
+        context.Services.AddTransient<ICommunityAppService, CommunityAppService>();
 
         Configure<AbpAutoMapperOptions>(options =>
         {
